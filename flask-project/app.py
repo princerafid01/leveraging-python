@@ -1,9 +1,11 @@
 from flask import Flask
 import json
 import os
+import psycopg2
 from files.LinkedList import LinkedList
 
 app  = Flask(__name__)
+
 
 @app.route('/')
 def home():
@@ -11,8 +13,21 @@ def home():
 
 @app.route('/api/v1/insert/<number>')
 def insert_into_linked_list(number):
-    ll = LinkedList()
     number = int(number)
+
+    # Database stuff
+    con = psycopg2.connect(
+        host="localhost",
+        database="rafid",
+        user="root",
+        password=""
+    )
+    cur =  con.cursor()
+    cur.execute("INSERT INTO sahil.lists (list_number) VALUES (%d)" %number)
+    cur.close()
+    con.close()
+
+    ll = LinkedList()
 
     # Opening JSON file
     jsonFile = open('files/linkedList.json')
@@ -32,6 +47,7 @@ def insert_into_linked_list(number):
     #  Make json file with json data
     with open('files/linkedList.json', 'w') as jsonFile:
         json.dump(newLinkedList, jsonFile)
+
 
     return f'Linkedlist is {ll}'
 
@@ -73,4 +89,4 @@ def print():
 
 
 if __name__ == "__main__":
-    app.run(host='172.17.0.2')
+    app.run()
