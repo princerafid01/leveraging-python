@@ -1,0 +1,6 @@
+flask
+flask-script
+flask-migrate
+flask-sqlalchemy
+psycopg2
+Werkzeug
