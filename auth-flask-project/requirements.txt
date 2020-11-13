@@ -4,3 +4,4 @@ flask-migrate
 flask-sqlalchemy
 psycopg2
 Werkzeug
+pyjwt
